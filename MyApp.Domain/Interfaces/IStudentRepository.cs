@@ -10,9 +10,9 @@ namespace MyApp.Domain.Interfaces
 	public interface IStudentRepository
 	{
 		Task<Student?> AddStudentAsync(Student student);
-		Task<Student?> UpdateStudentAsync(int studentId, Student student);
-		Task<bool> DeleteStudentAsync(int studentId);
-		Task<List<Student>?> GetAllStudentsAsync(int pageNumber, int pageSize);
-		Task<Student?> GetStudentByIdAsync(int studentId);
+		Task<Student?> UpdateStudentAsync(Guid studentId, Student student);
+		Task<bool> DeleteStudentAsync(Guid studentId);
+		Task<PaginatedList<Student>> GetAllStudentsAsync(int pageNumber, int pageSize);
+		Task<Student?> GetStudentByIdAsync(Guid studentId);
 	}
 }

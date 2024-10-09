@@ -27,7 +27,7 @@ namespace MyApp.Infrastructure.Repositories
 			return student;
 		}
 
-		public async Task<bool> DeleteStudentAsync(int studentId)
+		public async Task<bool> DeleteStudentAsync(Guid studentId)
 		{
 			var student = await context.Students.FindAsync(studentId);
 			if (student == null)
@@ -39,28 +39,38 @@ namespace MyApp.Infrastructure.Repositories
 			return true;
 		}
 
-		public async Task<List<Student>?> GetAllStudentsAsync(int pageNumber, int pageSize)
+		public async Task<PaginatedList<Student>> GetAllStudentsAsync(int pageNumber, int pageSize)
 		{
 			var students = context.Students.AsQueryable();
 
 			var skipResult = (pageNumber - 1) * pageSize;
+			var totalRecords = await students.CountAsync();
+			var items = await students.Skip(skipResult).Take(pageSize).ToListAsync();
+			
+			var totalPage = (int)Math.Ceiling((double)totalRecords/pageSize);
 
-			var result = await students.Skip(skipResult).Take(pageSize).ToListAsync();
+			var result = new PaginatedList<Student>()
+			{
+				Items = items,
+				PageIndex = pageNumber,
+				TotalPages = totalPage
+			};
+
 			return result;
 		}
 
-		public async Task<Student?> GetStudentByIdAsync(int studentId)
+		public async Task<Student?> GetStudentByIdAsync(Guid studentId)
 		{
 			var student = await context.Students.FindAsync(studentId);
 			return student;
 		}
 
-		public async Task<Student?> UpdateStudentAsync(int studentId, Student student)
+		public async Task<Student?> UpdateStudentAsync(Guid studentId, Student student)
 		{
 			var existingStudent = await context.Students.FindAsync(studentId);
 			if (existingStudent == null)
 			{
-					return null;
+				return null;
 			}
 			existingStudent.FirstName = student.FirstName;
 			existingStudent.LastName = student.LastName;

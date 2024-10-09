@@ -1,4 +1,7 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Aplication.Mappers;
+using MyApp.Aplication.Services;
 using MyApp.Domain.Interfaces;
 using MyApp.Infrastructure.Data;
 using MyApp.Infrastructure.Repositories;
@@ -17,7 +20,10 @@ builder.Services.AddDbContext<MyAppDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddAutoMapper(typeof(MapperProfiles));
+
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentServices, StudentService>();
 
 var app = builder.Build();
 
