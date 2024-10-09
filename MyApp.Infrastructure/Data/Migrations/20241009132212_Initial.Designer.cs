@@ -12,7 +12,7 @@ using MyApp.Infrastructure.Data;
 namespace MyApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MyAppDbContext))]
-    [Migration("20241009130506_Initial")]
+    [Migration("20241009132212_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MyProperty");
+                    b.ToTable("Students");
                 });
 #pragma warning restore 612, 618
         }

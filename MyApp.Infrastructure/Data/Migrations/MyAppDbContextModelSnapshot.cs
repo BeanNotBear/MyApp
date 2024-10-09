@@ -38,7 +38,7 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MyProperty");
+                    b.ToTable("Students");
                 });
 #pragma warning restore 612, 618
         }

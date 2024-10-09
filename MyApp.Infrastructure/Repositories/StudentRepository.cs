@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Domain.Entities;
 using MyApp.Domain.Interfaces;
 using MyApp.Infrastructure.Data;
 using System;
@@ -21,29 +22,51 @@ namespace MyApp.Infrastructure.Repositories
 
 		public async Task<Student?> AddStudentAsync(Student student)
 		{
-			//await context..AddAsync(student);
+			await context.Students.AddAsync(student);
 			await context.SaveChangesAsync();
 			return student;
 		}
 
 		public async Task<bool> DeleteStudentAsync(int studentId)
 		{
-			//var student = await context.
+			var student = await context.Students.FindAsync(studentId);
+			if (student == null)
+			{
+				return false;
+			}
+			context.Students.Remove(student);
+			await context.SaveChangesAsync();
+			return true;
 		}
 
-		public Task<List<Student>> GetAllStudentsAsync(int pageNumber, int pageSize)
+		public async Task<List<Student>?> GetAllStudentsAsync(int pageNumber, int pageSize)
 		{
-			throw new NotImplementedException();
+			var students = context.Students.AsQueryable();
+
+			var skipResult = (pageNumber - 1) * pageSize;
+
+			var result = await students.Skip(skipResult).Take(pageSize).ToListAsync();
+			return result;
 		}
 
-		public Task<Student> GetStudentByIdAsync(int studentId)
+		public async Task<Student?> GetStudentByIdAsync(int studentId)
 		{
-			throw new NotImplementedException();
+			var student = await context.Students.FindAsync(studentId);
+			return student;
 		}
 
-		public Task<Student> UpdateStudentAsync(int studentId, Student student)
+		public async Task<Student?> UpdateStudentAsync(int studentId, Student student)
 		{
-			throw new NotImplementedException();
+			var existingStudent = await context.Students.FindAsync(studentId);
+			if (existingStudent == null)
+			{
+					return null;
+			}
+			existingStudent.FirstName = student.FirstName;
+			existingStudent.LastName = student.LastName;
+
+			await context.SaveChangesAsync();
+			return existingStudent;
 		}
 	}
 }

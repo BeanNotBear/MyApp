@@ -10,9 +10,10 @@ namespace MyApp.Infrastructure.Data
 {
 	public class MyAppDbContext : DbContext
 	{
-        public DbSet<Student> Students { get; set; }
-        public MyAppDbContext(DbContextOptions options) : base(options)
+		public MyAppDbContext(DbContextOptions options) : base(options)
 		{
 		}
+
+		public DbSet<Student> Students { get; set; }
 	}
 }
