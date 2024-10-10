@@ -38,6 +38,11 @@ namespace MyApp.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create([FromBody] CreateStudentRequestDTO createStudentRequest)
 		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
 			var student = await studentServices.CreateAsync(createStudentRequest);
 
 			return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
@@ -59,6 +64,10 @@ namespace MyApp.API.Controllers
 		[Route("{id:guid}")]
 		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateStudentRequestDTO updateStudentRequest)
 		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 			var updatedStudent = await studentServices.UpdateAsync(id, updateStudentRequest);
 			if (updatedStudent == null)
 			{
