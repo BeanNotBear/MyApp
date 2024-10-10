@@ -31,9 +31,9 @@ namespace MyApp.Aplication.Services
 			return isDeleted;
 		}
 
-		public async Task<PaginatedList<StudentDTO>> GetAllAsync(int pageNumber, int pageSize)
+		public async Task<PaginatedList<StudentDTO>> GetAllAsync(QueryParameter queryParameter)
 		{
-			var students = await studentRepository.GetAllStudentsAsync(pageNumber, pageSize);
+			var students = await studentRepository.GetAllStudentsAsync(queryParameter.PageNumber, queryParameter.PageSize);
 			var result = mapper.Map<PaginatedList<StudentDTO>>(students);
 			return result;
 		}
@@ -49,7 +49,7 @@ namespace MyApp.Aplication.Services
 		{
 			var studentEntity = mapper.Map<Student>(updateStudentRequest);
 			var updatedStudent = await studentRepository.UpdateStudentAsync(studentId, studentEntity);
-			var studentDTO = mapper.Map<StudentDTO>(studentEntity);
+			var studentDTO = mapper.Map<StudentDTO>(updatedStudent);
 			return studentDTO;
 		}
 	}

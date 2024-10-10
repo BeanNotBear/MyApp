@@ -5,7 +5,7 @@ namespace MyApp.Aplication.Services
 {
 	public interface IStudentServices
 	{
-		Task<PaginatedList<StudentDTO>> GetAllAsync(int pageNumber, int pageSize);
+		Task<PaginatedList<StudentDTO>> GetAllAsync(QueryParameter queryParameter);
 		Task<StudentDTO> CreateAsync(CreateStudentRequestDTO creatingStudentRequest);
 
 		Task<StudentDTO> UpdateAsync(Guid studentId, UpdateStudentRequestDTO updateStudentRequest);

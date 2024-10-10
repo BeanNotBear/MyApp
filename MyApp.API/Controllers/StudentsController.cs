@@ -17,9 +17,9 @@ namespace MyApp.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAll([FromQuery] int pageNumber, [FromQuery] int pageSize)
+		public async Task<IActionResult> GetAll([FromQuery] QueryParameter queryParameter)
 		{
-			var result = await studentServices.GetAllAsync(pageNumber, pageSize);
+			var result = await studentServices.GetAllAsync(queryParameter);
 			return Ok(result);
 		}
 
@@ -40,7 +40,32 @@ namespace MyApp.API.Controllers
 		{
 			var student = await studentServices.CreateAsync(createStudentRequest);
 
-			return CreatedAtAction(nameof(GetById), new {id = student.Id}, student);
+			return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
+		}
+
+		[HttpDelete]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Delete([FromRoute] Guid id)
+		{
+			bool isDeleted = await studentServices.DeleteAsync(id);
+			if (!isDeleted)
+			{
+				return NotFound();
+			}
+			return NoContent();
+		}
+
+		[HttpPut]
+		[Route("{id:guid}")]
+		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateStudentRequestDTO updateStudentRequest)
+		{
+			var updatedStudent = await studentServices.UpdateAsync(id, updateStudentRequest);
+			if (updatedStudent == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(updatedStudent);
 		}
 	}
 }

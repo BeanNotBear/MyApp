@@ -8,9 +8,9 @@ namespace MyApp.Aplication.Mappers
 	{
 		public MapperProfiles()
 		{
-			CreateMap<CreateStudentRequestDTO, Student>().ReverseMap();
+			CreateMap<StudentDTO, Student>().ReverseMap();
 			CreateMap<UpdateStudentRequestDTO, Student>().ReverseMap();
-			CreateMap<StudentDTO, Student>().ReverseMap();	
+			CreateMap<StudentDTO, Student>().ReverseMap();
 			CreateMap<PaginatedList<StudentDTO>, PaginatedList<Student>>().ReverseMap();
 		}
 	}
